@@ -1,4 +1,84 @@
-<script>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>For My Sowju ❤️</title>
+    <style>
+        body { 
+            background-color: #fff0f3; 
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
+            display: flex; 
+            justify-content: center; 
+            align-items: center; 
+            height: 100vh; 
+            margin: 0; 
+            overflow: hidden; 
+        }
+        .card { 
+            background: white; 
+            padding: 40px; 
+            border-radius: 30px; 
+            box-shadow: 0 15px 35px rgba(255, 77, 109, 0.2); 
+            text-align: center; 
+            max-width: 450px; 
+            width: 90%; 
+            border: 2px solid #ff4d6d; 
+            position: relative;
+            z-index: 10;
+        }
+        h1 { color: #ff4d6d; font-size: 28px; margin-bottom: 10px; }
+        h2 { color: #333; font-size: 20px; line-height: 1.5; }
+        
+        .btn-container { 
+            display: grid; 
+            grid-template-columns: 1fr 1fr; 
+            gap: 15px; 
+            margin-top: 25px; 
+        }
+        .btn { 
+            background: #ff4d6d; 
+            color: white; 
+            border: none; 
+            padding: 15px; 
+            border-radius: 15px; 
+            cursor: pointer; 
+            font-size: 16px; 
+            transition: 0.3s; 
+            font-weight: bold; 
+        }
+        .btn:hover { background: #c9184a; transform: scale(1.05); }
+        
+        /* FIXED: Added 'relative' so it stays in the flow at first */
+        #noBtn { 
+            position: relative; 
+            min-width: 100px; 
+            transition: 0.1s; 
+            z-index: 999;
+        }
+        .final-btn-container { 
+            margin-top: 30px; 
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 20px; /* Space between Yes and No */
+        }
+    </style>
+</head>
+<body>
+
+    <div class="card" id="quizBox">
+        <h1 id="titleText">Hey Sowju! ❤️</h1>
+        <h2 id="questionText">First things first... Where did we actually meet for the first time?</h2>
+        <div id="options" class="btn-container">
+            <button class="btn" onclick="wrong()">Charminar</button>
+            <button class="btn" onclick="correct()">In our college</button>
+            <button class="btn" onclick="wrong()">NCC Gate</button>
+            <button class="btn" onclick="wrong()">Photoshoot</button>
+        </div>
+    </div>
+
+    <script>
         let step = 1;
 
         function wrong() {
@@ -33,7 +113,7 @@
                 options.className = ""; 
                 options.innerHTML = `
                     <div class="final-btn-container">
-                        <button class="btn" id="yesBtn" style="width: 120px; margin-right: 20px;" onclick="celebrate()">Yes!</button>
+                        <button class="btn" id="yesBtn" style="width: 120px;" onclick="celebrate()">Yes!</button>
                         <button class="btn" id="noBtn" style="width: 120px;" onmouseover="moveButton()" onclick="moveButton()">No</button>
                     </div>`;
             }
@@ -42,12 +122,16 @@
         function moveButton() {
             const btn = document.getElementById("noBtn");
             
-            // This ensures the button stays 50px away from the edges
+            // On the first hover/click, we change it from relative to absolute
+            // so it can jump anywhere on the screen.
+            if (btn.style.position !== 'absolute') {
+                btn.style.position = 'absolute';
+            }
+
             const padding = 50;
             const maxX = window.innerWidth - btn.offsetWidth - padding;
             const maxY = window.innerHeight - btn.offsetHeight - padding;
 
-            // Generate random position within the safe boundaries
             const x = Math.max(padding, Math.floor(Math.random() * maxX));
             const y = Math.max(padding, Math.floor(Math.random() * maxY));
 
@@ -64,3 +148,5 @@
             `;
         }
     </script>
+</body>
+</html>
