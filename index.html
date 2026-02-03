@@ -46,22 +46,26 @@
             font-size: 16px; 
             transition: 0.3s; 
             font-weight: bold; 
+            display: inline-block;
         }
         .btn:hover { background: #c9184a; transform: scale(1.05); }
         
-        /* FIXED: Added 'relative' so it stays in the flow at first */
-        #noBtn { 
-            position: relative; 
-            min-width: 100px; 
-            transition: 0.1s; 
-            z-index: 999;
-        }
+        /* Fixed styling for the final buttons */
         .final-btn-container { 
             margin-top: 30px; 
-            display: flex;
+            display: flex; /* Force horizontal alignment */
             justify-content: center;
             align-items: center;
-            gap: 20px; /* Space between Yes and No */
+            gap: 30px; /* Physical gap between buttons */
+            width: 100%;
+            min-height: 60px;
+        }
+
+        #noBtn { 
+            position: relative; /* Start next to Yes */
+            min-width: 100px; 
+            z-index: 999;
+            transition: 0.1s;
         }
     </style>
 </head>
@@ -110,25 +114,24 @@
             } else if (step === 4) {
                 title.innerText = "One last thing... 💎";
                 qText.innerText = "Will you be my Valentine, Sowju?";
-                options.className = ""; 
+                
+                // Clear grid and use the Flexbox container
+                options.className = "final-btn-container"; 
                 options.innerHTML = `
-                    <div class="final-btn-container">
-                        <button class="btn" id="yesBtn" style="width: 120px;" onclick="celebrate()">Yes!</button>
-                        <button class="btn" id="noBtn" style="width: 120px;" onmouseover="moveButton()" onclick="moveButton()">No</button>
-                    </div>`;
+                    <button class="btn" id="yesBtn" style="width: 120px;" onclick="celebrate()">Yes!</button>
+                    <button class="btn" id="noBtn" style="width: 120px;" onmouseover="moveButton()" onclick="moveButton()">No</button>`;
             }
         }
 
         function moveButton() {
             const btn = document.getElementById("noBtn");
             
-            // On the first hover/click, we change it from relative to absolute
-            // so it can jump anywhere on the screen.
+            // Switch to absolute immediately on hover/click
             if (btn.style.position !== 'absolute') {
                 btn.style.position = 'absolute';
             }
 
-            const padding = 50;
+            const padding = 60;
             const maxX = window.innerWidth - btn.offsetWidth - padding;
             const maxY = window.innerHeight - btn.offsetHeight - padding;
 
