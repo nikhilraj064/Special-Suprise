@@ -30,12 +30,25 @@
         h1 { color: #ff4d6d; font-size: 28px; margin-bottom: 10px; }
         h2 { color: #333; font-size: 20px; line-height: 1.5; }
         
+        /* The container for the first 3 questions (Grid Layout) */
         .btn-container { 
             display: grid; 
             grid-template-columns: 1fr 1fr; 
             gap: 15px; 
             margin-top: 25px; 
         }
+        
+        /* The container for the FINAL question (Flex Layout) */
+        /* Initially hidden with display: none */
+        .final-buttons { 
+            display: none; 
+            justify-content: center; 
+            gap: 30px; 
+            margin-top: 30px;
+            align-items: center;
+            height: 80px; /* Reserves space so buttons don't jump */
+        }
+
         .btn { 
             background: #ff4d6d; 
             color: white; 
@@ -46,26 +59,19 @@
             font-size: 16px; 
             transition: 0.3s; 
             font-weight: bold; 
-            display: inline-block;
         }
         .btn:hover { background: #c9184a; transform: scale(1.05); }
         
-        /* Fixed styling for the final buttons */
-        .final-btn-container { 
-            margin-top: 30px; 
-            display: flex; /* Force horizontal alignment */
-            justify-content: center;
-            align-items: center;
-            gap: 30px; /* Physical gap between buttons */
-            width: 100%;
-            min-height: 60px;
+        /* The Runaway Button */
+        #noBtn { 
+            position: relative; /* Starts relative to sit next to YES */
+            width: 120px;
+            z-index: 999;
+            transition: 0.1s; 
         }
 
-        #noBtn { 
-            position: relative; /* Start next to Yes */
-            min-width: 100px; 
-            z-index: 999;
-            transition: 0.1s;
+        #yesBtn {
+            width: 120px;
         }
     </style>
 </head>
@@ -74,12 +80,19 @@
     <div class="card" id="quizBox">
         <h1 id="titleText">Hey Sowju! ❤️</h1>
         <h2 id="questionText">First things first... Where did we actually meet for the first time?</h2>
+        
         <div id="options" class="btn-container">
             <button class="btn" onclick="wrong()">Charminar</button>
             <button class="btn" onclick="correct()">In our college</button>
             <button class="btn" onclick="wrong()">NCC Gate</button>
             <button class="btn" onclick="wrong()">Photoshoot</button>
         </div>
+
+        <div id="finalButtons" class="final-buttons">
+            <button class="btn" id="yesBtn" onclick="celebrate()">Yes!</button>
+            <button class="btn" id="noBtn" onmouseover="moveButton()" onclick="moveButton()">No</button>
+        </div>
+
     </div>
 
     <script>
@@ -94,6 +107,7 @@
             const qText = document.getElementById("questionText");
             const options = document.getElementById("options");
             const title = document.getElementById("titleText");
+            const finalBtns = document.getElementById("finalButtons");
 
             if (step === 2) {
                 title.innerText = "Good job, Sowju! 😘";
@@ -115,23 +129,24 @@
                 title.innerText = "One last thing... 💎";
                 qText.innerText = "Will you be my Valentine, Sowju?";
                 
-                // Clear grid and use the Flexbox container
-                options.className = "final-btn-container"; 
-                options.innerHTML = `
-                    <button class="btn" id="yesBtn" style="width: 120px;" onclick="celebrate()">Yes!</button>
-                    <button class="btn" id="noBtn" style="width: 120px;" onmouseover="moveButton()" onclick="moveButton()">No</button>`;
+                // Hide the old grid options
+                options.style.display = "none";
+                
+                // Show the new flex buttons
+                finalBtns.style.display = "flex";
             }
         }
 
         function moveButton() {
             const btn = document.getElementById("noBtn");
             
-            // Switch to absolute immediately on hover/click
+            // Switch to absolute positioning so it can fly anywhere
             if (btn.style.position !== 'absolute') {
                 btn.style.position = 'absolute';
             }
 
-            const padding = 60;
+            // Safe Zone Logic
+            const padding = 50;
             const maxX = window.innerWidth - btn.offsetWidth - padding;
             const maxY = window.innerHeight - btn.offsetHeight - padding;
 
