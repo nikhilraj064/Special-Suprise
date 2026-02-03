@@ -30,6 +30,18 @@
         h1 { color: #ff4d6d; font-size: 28px; margin-bottom: 10px; }
         h2 { color: #333; font-size: 20px; line-height: 1.5; }
         
+        /* The funny note style */
+        .note {
+            background-color: #ffe6e6;
+            color: #cc0000;
+            padding: 10px;
+            border-radius: 10px;
+            font-size: 14px;
+            margin-bottom: 20px;
+            font-weight: bold;
+            border: 1px dashed #ff4d6d;
+        }
+
         .btn-container { 
             display: grid; 
             grid-template-columns: 1fr 1fr; 
@@ -37,7 +49,6 @@
             margin-top: 25px; 
         }
         
-        /* The container for the FINAL question */
         .final-buttons { 
             display: none; 
             justify-content: center; 
@@ -63,7 +74,7 @@
         #noBtn { 
             position: relative; 
             width: 120px;
-            z-index: 9999; /* Super high so it floats over everything */
+            z-index: 9999; 
             transition: 0.1s; 
         }
 
@@ -75,14 +86,20 @@
 <body>
 
     <div class="card" id="quizBox">
+        
         <h1 id="titleText">Hey Sowju! ❤️</h1>
+        
+        <div id="introNote" class="note">
+            Note: I'm tired of asking you to be my Valentine and hearing "No". <br> So... this is the last time I'm asking! 😤
+        </div>
+
         <h2 id="questionText">First things first... Where did we actually meet for the first time?</h2>
         
         <div id="options" class="btn-container">
-            <button class="btn" onclick="wrong()">Charminar</button>
+            <button class="btn" onclick="wrong(1)">Charminar</button>
             <button class="btn" onclick="correct()">In our college</button>
-            <button class="btn" onclick="wrong()">NCC Gate</button>
-            <button class="btn" onclick="wrong()">Photoshoot</button>
+            <button class="btn" onclick="wrong(1)">NCC Gate</button>
+            <button class="btn" onclick="wrong(1)">Photoshoot</button>
         </div>
 
         <div id="finalButtons" class="final-buttons">
@@ -95,8 +112,14 @@
     <script>
         let step = 1;
 
-        function wrong() {
-            alert("Gudhutha 👊👊👊 Try again!");
+        function wrong(questionNumber) {
+            if (questionNumber === 1) {
+                alert("Gudhutha 👊👊👊 Try again!");
+            } else if (questionNumber === 2) {
+                alert("Nee Mukku 🤦🏻‍♂️");
+            } else if (questionNumber === 3) {
+                alert("Gudhutha 👊👊👊");
+            }
         }
 
         function correct() {
@@ -104,24 +127,27 @@
             const qText = document.getElementById("questionText");
             const options = document.getElementById("options");
             const title = document.getElementById("titleText");
+            const note = document.getElementById("introNote");
             const finalBtns = document.getElementById("finalButtons");
+
+            if (note) note.style.display = 'none';
 
             if (step === 2) {
                 title.innerText = "Good job, Sowju! 😘";
                 qText.innerText = "Where did we go for our very first date?";
                 options.innerHTML = `
-                    <button class="btn" onclick="wrong()">Valanam</button>
-                    <button class="btn" onclick="correct()">Ktitunga</button>
-                    <button class="btn" onclick="wrong()">Bawarchi</button>
-                    <button class="btn" onclick="wrong()">House of Bagara</button>`;
+                    <button class="btn" onclick="wrong(2)">Valanam</button>
+                    <button class="btn" onclick="correct()">Kritunga</button>
+                    <button class="btn" onclick="wrong(2)">Bawarchi</button>
+                    <button class="btn" onclick="wrong(2)">House of Bagara</button>`;
             } else if (step === 3) {
                 title.innerText = "Correct again! 🔥";
                 qText.innerText = "What was the first movie we watched together?";
                 options.innerHTML = `
-                    <button class="btn" onclick="wrong()">Hit 3</button>
-                    <button class="btn" onclick="wrong()">Final Destination 6</button>
+                    <button class="btn" onclick="wrong(3)">Hit 3</button>
+                    <button class="btn" onclick="wrong(3)">Final Destination 6</button>
                     <button class="btn" onclick="correct()">Arya 2</button>
-                    <button class="btn" onclick="wrong()">War 2</button>`;
+                    <button class="btn" onclick="wrong(3)">War 2</button>`;
             } else if (step === 4) {
                 title.innerText = "One last thing... 💎";
                 qText.innerText = "Will you be my Valentine, Sowju?";
@@ -133,40 +159,39 @@
         function moveButton() {
             const btn = document.getElementById("noBtn");
             
-            // KEY FIX: Change to 'fixed' so it calculates relative to the SCREEN, not the CARD
             if (btn.style.position !== 'fixed') {
                 btn.style.position = 'fixed';
             }
 
-            // Get the actual screen size (Viewport)
             const viewportWidth = window.innerWidth;
             const viewportHeight = window.innerHeight;
-            
             const btnWidth = btn.offsetWidth;
             const btnHeight = btn.offsetHeight;
-
-            // Padding to ensure it doesn't touch the very edge
             const padding = 20;
 
-            // Calculate safe boundaries
             const maxLeft = viewportWidth - btnWidth - padding;
             const maxTop = viewportHeight - btnHeight - padding;
 
-            // Generate random position
             const randomLeft = Math.floor(Math.random() * (maxLeft - padding)) + padding;
             const randomTop = Math.floor(Math.random() * (maxTop - padding)) + padding;
 
-            // Apply new coordinates
             btn.style.left = randomLeft + "px";
             btn.style.top = randomTop + "px";
         }
 
         function celebrate() {
             document.getElementById("quizBox").innerHTML = `
-                <h1 style="font-size: 50px;">💖</h1>
-                <h1>Yay! I knew it!</h1>
-                <h2>Happy Valentine's Day, Sowju! <br><br> I'm so happy you said yes. Can't wait for our date! ❤️</h2>
-                <p style="color: #ff4d6d; font-weight: bold; font-size: 1.2rem;">- With love, Nikhil Raj</p>
+                <h1>Yay! I knew it! 💖</h1>
+                
+                <img src="us.jpg" alt="Us" style="width: 100%; max-width: 250px; border-radius: 15px; margin: 20px 0; border: 3px solid #ff4d6d;">
+                
+                <h2>Happy Valentine's Day, Sowju!</h2>
+                
+                <p style="color: #333; font-size: 16px; margin: 20px 0; font-style: italic;">
+                    "You are the first Valentine of my life, <br> and I want you to be my Valentine forever."
+                </p>
+
+                <p style="color: #ff4d6d; font-weight: bold; font-size: 1.2rem;">- With love, your Nikhil Babu</p>
             `;
         }
     </script>
