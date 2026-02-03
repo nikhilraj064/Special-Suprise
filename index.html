@@ -5,15 +5,67 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>For My Sowju ❤️</title>
     <style>
-        body { background-color: #fff0f3; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0; overflow: hidden; }
-        .card { background: white; padding: 40px; border-radius: 30px; box-shadow: 0 15px 35px rgba(255, 77, 109, 0.2); text-align: center; max-width: 450px; width: 90%; border: 2px solid #ff4d6d; }
+        /* General styling to make it look clean and romantic */
+        body { 
+            background-color: #fff0f3; 
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
+            display: flex; 
+            justify-content: center; 
+            align-items: center; 
+            height: 100vh; 
+            margin: 0; 
+            overflow: hidden; 
+        }
+        .card { 
+            background: white; 
+            padding: 40px; 
+            border-radius: 30px; 
+            box-shadow: 0 15px 35px rgba(255, 77, 109, 0.2); 
+            text-align: center; 
+            max-width: 450px; 
+            width: 90%; 
+            border: 2px solid #ff4d6d; 
+            position: relative;
+            z-index: 10;
+        }
         h1 { color: #ff4d6d; font-size: 28px; margin-bottom: 10px; }
         h2 { color: #333; font-size: 20px; line-height: 1.5; }
-        .btn-container { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-top: 25px; }
-        .btn { background: #ff4d6d; color: white; border: none; padding: 15px; border-radius: 15px; cursor: pointer; font-size: 16px; transition: 0.3s; font-weight: bold; }
+        
+        /* Grid for MCQs */
+        .btn-container { 
+            display: grid; 
+            grid-template-columns: 1fr 1fr; 
+            gap: 15px; 
+            margin-top: 25px; 
+        }
+        .btn { 
+            background: #ff4d6d; 
+            color: white; 
+            border: none; 
+            padding: 15px; 
+            border-radius: 15px; 
+            cursor: pointer; 
+            font-size: 16px; 
+            transition: 0.3s; 
+            font-weight: bold; 
+        }
         .btn:hover { background: #c9184a; transform: scale(1.05); }
-        #noBtn { position: absolute; min-width: 100px; }
-        .final-btn-container { margin-top: 30px; position: relative; height: 100px; }
+        
+        /* Special handling for the Runaway No button */
+        #noBtn { 
+            position: absolute; 
+            min-width: 100px; 
+            transition: 0.1s; /* Makes the jump look faster */
+            z-index: 999;
+        }
+        .final-btn-container { 
+            margin-top: 30px; 
+            position: relative; 
+            height: 100px; 
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
         .hidden { display: none; }
     </style>
 </head>
@@ -33,6 +85,7 @@
     <script>
         let step = 1;
 
+        // The "roast" alert you requested
         function wrong() {
             alert("Gudhutha 👊👊👊 Try again!");
         }
@@ -62,30 +115,33 @@
             } else if (step === 4) {
                 title.innerText = "One last thing... 💎";
                 qText.innerText = "Will you be my Valentine, Sowju?";
-                // Clear the grid and set up the Yes/No buttons
+                // Resetting container for the final Yes/No showdown
                 options.className = ""; 
                 options.innerHTML = `
                     <div class="final-btn-container">
-                        <button class="btn" id="yesBtn" style="width: 120px;" onclick="celebrate()">Yes!</button>
-                        <button class="btn" id="noBtn" style="width: 120px;" onmouseover="moveButton()">No</button>
+                        <button class="btn" id="yesBtn" style="width: 120px; margin-right: 20px;" onclick="celebrate()">Yes!</button>
+                        <button class="btn" id="noBtn" style="width: 120px;" onmouseover="moveButton()" onclick="moveButton()">No</button>
                     </div>`;
             }
         }
 
+        // Function to make the No button run away
         function moveButton() {
             const btn = document.getElementById("noBtn");
+            // Randomly moves button within the window viewable area
             const x = Math.random() * (window.innerWidth - btn.offsetWidth);
             const y = Math.random() * (window.innerHeight - btn.offsetHeight);
             btn.style.left = x + "px";
             btn.style.top = y + "px";
         }
 
+        // Final screen after she clicks Yes
         function celebrate() {
             document.getElementById("quizBox").innerHTML = `
                 <h1 style="font-size: 50px;">💖</h1>
                 <h1>Yay! I knew it!</h1>
                 <h2>Happy Valentine's Day, Sowju! <br><br> I'm so happy you said yes. Can't wait for our date! ❤️</h2>
-                <p style="color: #ff4d6d; font-weight: bold;">- With love, Nikhil Raj</p>
+                <p style="color: #ff4d6d; font-weight: bold; font-size: 1.2rem;">- With love, Nikhil Raj</p>
             `;
         }
     </script>
